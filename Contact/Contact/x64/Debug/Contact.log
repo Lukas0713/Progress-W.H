@@ -1,5 +1,5 @@
 ﻿  contact.c
-D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(124,25): warning C4090: “函数”: 不同的“const”限定符
-D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(191,65): warning C4090: “函数”: 不同的“const”限定符
-D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(191,50): warning C4113: “int (__cdecl *)(void *,void *)”和“_CoreCrtNonSecureSearchSortCompareFunction”的参数列表不同
+D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(183,25): warning C4090: “函数”: 不同的“const”限定符
+D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(250,65): warning C4090: “函数”: 不同的“const”限定符
+D:\ProgramData\VS Code\Code 24\Contact\Contact\contact.c(250,50): warning C4113: “int (__cdecl *)(void *,void *)”和“_CoreCrtNonSecureSearchSortCompareFunction”的参数列表不同
   Contact.vcxproj -> D:\ProgramData\VS Code\Code 24\Contact\x64\Debug\Contact.exe

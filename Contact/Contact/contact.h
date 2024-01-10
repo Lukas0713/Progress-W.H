@@ -5,12 +5,18 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#define DEFAULF_SZ 3
+#define INC_SZ 2
+
 #define MAX 100
 #define MAX_NAME 20
 #define MAX_SEX 10
 #define MAX_TELE 12
 #define MAX_ADDR 30
 
+//两个版本
+//1.静态版本--通讯录容量固定
+//2.动态版本--通讯录容量可以扩容
 
 //类型声明
 typedef struct Peoinfo  //用typedef将struct Peoinfo这个结构体类型重新命名为Peoinfo
@@ -22,15 +28,27 @@ typedef struct Peoinfo  //用typedef将struct Peoinfo这个结构体类型重新命名为Peoin
 	char addr[MAX_ADDR];
 }Peoinfo;
 
-//
+////静态版本
+//typedef struct Contact
+//{
+//	Peoinfo data[100];//存放人的信息
+//	int count;//记录当前通讯录中实际人数
+//}Contact;
+
+//动态版本
 typedef struct Contact
 {
-	Peoinfo data[100];
-	int count;
+	Peoinfo* data;//存放人的信息
+	int count; //记录当前通讯录中实际人数
+	int capacity;//记录通讯录的容量
 }Contact;
+
 
 //初始化con
 void InitContact(Contact* pc);
+
+//销毁通讯录内存空间
+void DestoryContact(Contact* pc);
 
 //增加通讯录联系人
 void AddContact(Contact* pc);

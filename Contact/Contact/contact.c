@@ -3,41 +3,100 @@
 #include "contact.h"
 
 //初始化con
+//静态版本
+//void InitContact(Contact* pc)
+//{
+//  assert(pc);
+//	pc->count = 0;
+//	memset(pc->data, 0, sizeof(pc->data));
+//}
+
+//动态版本
 void InitContact(Contact* pc)
 {
+	assert(pc);
 	pc->count = 0;
-	memset(pc->data, 0, sizeof(pc->data));
+	pc->data = (Peoinfo*)calloc(DEFAULF_SZ, sizeof(Peoinfo));
+	if (pc->data == NULL)
+	{
+		printf("InitContact::%s\n", strerror(errno));
+		return;
+	}
+	pc->capacity = 3;
+}
+
+//推出程序时销毁申请的动态内存空间
+void DestoryContact(Contact* pc)
+{
+	assert(pc);
+	free(pc->data);
+	pc->data = NULL;
+}
+
+
+//增加通讯录联系人
+//静态版本
+//void AddContact(Contact* pc)
+//{
+//	assert(pc);
+//	if (pc->count == MAX) 
+//	{
+//		printf("通讯录已满，无法添加\n");
+//		return;
+//	}
+//
+//	printf("请输入联系人的名字：\n");
+//	scanf("%s", pc->data[pc->count].name);
+//	printf("请输入联系人的年龄：\n");
+//	scanf("%d", &(pc->data[pc->count].age));
+//	printf("请输入联系人的性别：\n");
+//	scanf("%s", pc->data[pc->count].sex);
+//	printf("请输入联系人的电话：\n");
+//	scanf("%s", pc->data[pc->count].tele);
+//	printf("请输入联系人的地址：\n");
+//	scanf("%s", pc->data[pc->count].addr);
+//
+//	pc->count++;
+//	printf("增加成功\n");
+//}
+
+
+//动态版本
+void CheckCapacity(Contact* pc)
+{
+	if (pc->count == pc->capacity)
+	{
+		Peoinfo* ptr = (Peoinfo*)realloc(pc->data, (pc->capacity += INC_SZ) * sizeof(Peoinfo));
+		if (ptr == NULL)
+		{
+			printf("AddContact::%s\n", strerror(errno));
+		}
+		else
+			pc->data = ptr;
+		printf("扩容成功\n");
+	}
 
 }
 
-//增加通讯录联系人
 void AddContact(Contact* pc)
 {
 	assert(pc);
-	if (pc->count == MAX) 
-	{
-		printf("通讯录已满，无法添加\n");
-		return;
-	}
+	//扩容
+	CheckCapacity(pc);
 
 	printf("请输入联系人的名字：\n");
 	scanf("%s", pc->data[pc->count].name);
-
 	printf("请输入联系人的年龄：\n");
 	scanf("%d", &(pc->data[pc->count].age));
-
 	printf("请输入联系人的性别：\n");
 	scanf("%s", pc->data[pc->count].sex);
-
 	printf("请输入联系人的电话：\n");
 	scanf("%s", pc->data[pc->count].tele);
-
 	printf("请输入联系人的地址：\n");
 	scanf("%s", pc->data[pc->count].addr);
 
 	pc->count++;
 	printf("增加成功\n");
-
 }
 
 //显示通讯录信息
@@ -55,10 +114,10 @@ void ShowContact(const Contact* pc)
 	for (i = 0; i < pc->count; i++)
 	{
 		printf("%-20s\t%-5d\t%-10s\t%-12s\t%-30s\n",  pc->data[i].name, 
-												 pc->data[i].age, 
-											 	 pc->data[i].sex, 
-											 	 pc->data[i].tele, 
-												 pc->data[i].addr);
+												      pc->data[i].age, 
+											 	      pc->data[i].sex, 
+											 	      pc->data[i].tele, 
+												      pc->data[i].addr);
 	}
 	printf("\n");
 
@@ -129,11 +188,11 @@ void SearchContact(const Contact* pc)
 	}
 	//2.打印查找到的联系人信息
 	printf("%-20s\t%-5s\t%-10s\t%-12s\t%-30s\n", "姓名", "年龄", "性别", "电话", "地址");
-	printf("%-20s\t%-5d\t%-10s\t%-12s\t%-30s\n", pc->data[pos].name,
-		pc->data[pos].age,
-		pc->data[pos].sex,
-		pc->data[pos].tele,
-		pc->data[pos].addr);
+	printf("%-20s\t%-5d\t%-10s\t%-12s\t%-30s\n",  pc->data[pos].name,
+												  pc->data[pos].age,
+												  pc->data[pos].sex,
+												  pc->data[pos].tele,
+												  pc->data[pos].addr);
 }
 
 //修改通讯录中指定联系人信息

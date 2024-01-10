@@ -45,6 +45,7 @@ int main()
 			SortContact(&con);
 			break;
 		case 0:
+			DestoryContact(&con);
 			printf("EXIT\n");
 			break;
 		default:
