@@ -2,8 +2,25 @@
 
 #include "contact.h"
 
+//增容
+void CheckCapacity(Contact* pc)
+{
+	if (pc->count == pc->capacity)
+	{
+		Peoinfo* ptr = (Peoinfo*)realloc(pc->data, (pc->capacity += INC_SZ) * sizeof(Peoinfo));
+		if (ptr == NULL)
+		{
+			printf("AddContact::%s\n", strerror(errno));
+		}
+		else
+			pc->data = ptr;
+		printf("扩容成功\n");
+	}
+
+}
+
 //初始化con
-//静态版本
+//1.静态版本
 //void InitContact(Contact* pc)
 //{
 //  assert(pc);
@@ -11,7 +28,26 @@
 //	memset(pc->data, 0, sizeof(pc->data));
 //}
 
-//动态版本
+//2.动态版本--3.文件版本
+void LoadContact(Contact* pc)
+{
+	FILE* pfread = fopen("Contact.txt", "rb");
+	if (pfread == NULL)
+	{
+		perror("LoadContact");
+		return;
+	}
+	Peoinfo temp = { 0 };
+	while (fread(&temp, sizeof(Peoinfo), 1, pfread))
+	{
+		CheckCapacity(pc);
+		pc->data[pc->count] = temp;
+		pc->count++;
+	}
+	fclose(pfread);
+	pfread = NULL;
+}
+
 void InitContact(Contact* pc)
 {
 	assert(pc);
@@ -22,7 +58,9 @@ void InitContact(Contact* pc)
 		printf("InitContact::%s\n", strerror(errno));
 		return;
 	}
-	pc->capacity = 3;
+	pc->capacity = DEFAULF_SZ;
+	//3.加载文件的信息到通讯录中
+	LoadContact(pc);
 }
 
 //推出程序时销毁申请的动态内存空间
@@ -35,7 +73,7 @@ void DestoryContact(Contact* pc)
 
 
 //增加通讯录联系人
-//静态版本
+//1.静态版本
 //void AddContact(Contact* pc)
 //{
 //	assert(pc);
@@ -61,22 +99,7 @@ void DestoryContact(Contact* pc)
 //}
 
 
-//动态版本
-void CheckCapacity(Contact* pc)
-{
-	if (pc->count == pc->capacity)
-	{
-		Peoinfo* ptr = (Peoinfo*)realloc(pc->data, (pc->capacity += INC_SZ) * sizeof(Peoinfo));
-		if (ptr == NULL)
-		{
-			printf("AddContact::%s\n", strerror(errno));
-		}
-		else
-			pc->data = ptr;
-		printf("扩容成功\n");
-	}
-
-}
+//2.动态版本
 
 void AddContact(Contact* pc)
 {
@@ -252,6 +275,29 @@ void SortContact(Contact* pc)
 	printf("排序成功\n");
 
 }
+
+
+//保存通讯录信息到文件
+void SaveContact(const Contact* pc)
+{
+	assert(pc);
+	FILE* pfwrite = fopen("Contact.txt", "wb");
+	if (pfwrite == NULL)
+	{
+		perror("SaveContact");
+		return;
+	}
+	//写文件--以二进制的形式
+	int i = 0;
+	for (i = 0; i < pc->count; i++)
+	{
+		fwrite(pc->data+i,sizeof(Peoinfo),1,pfwrite);
+	}
+
+	fclose(pfwrite);
+	pfwrite = NULL;
+}
+
 
 
 

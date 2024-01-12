@@ -17,6 +17,7 @@
 //两个版本
 //1.静态版本--通讯录容量固定
 //2.动态版本--通讯录容量可以扩容
+//3.文件版本
 
 //类型声明
 typedef struct Peoinfo  //用typedef将struct Peoinfo这个结构体类型重新命名为Peoinfo
@@ -68,6 +69,12 @@ void ModifyContact(Contact* pc);
 //排序
 //按名字排序
 void SortContact(Contact* pc);
+
+//保存通讯录信息到文件
+void SaveContact(const Contact* pc);
+
+//加载文件的信息到通讯录中
+void LoadContact(Contact* pc);
 
 
 
